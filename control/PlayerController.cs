@@ -7,9 +7,11 @@ public class PlayerController : MonoBehaviour {
     public Rigidbody2D rb2d;
     public float speed, velocity;
     public Vector2 vectorDir;
+    public GameObject ao;
 	// Use this for initialization
-	void Start () {
-        speed = 0.1f;
+	void Start ()
+    {
+        speed = 1f;
         vectorDir = Vector2.zero;
 
     }
@@ -21,8 +23,9 @@ public class PlayerController : MonoBehaviour {
 
     }
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
+
         /*
         Vector2 move = Vector2.zero;
         
@@ -69,12 +72,23 @@ public class PlayerController : MonoBehaviour {
         {
             x = speed;
         }
+
+        if (x != 0 && y != 0)
+        {
+            x = x / Mathf.Sqrt(2);
+            y = y / Mathf.Sqrt(2);
+        }
         //벡터 판덩
 
-        mt.Translate(x,y, 0f);
+        //mt.Translate(x,y, 0f);
+        rb2d.velocity = rb2d.velocity + new Vector2(x, y);
+        //rb2d.AddRelativeForce(new Vector2(x, y));
+        //rb2d.AddForce(new Vector2(x,y));
         //dt.localEulerAngles = new Vector3(0f, 0f, dt.localEulerAngles.z + Input.GetAxis("Mouse X") * -10f + Input.GetAxis("Mouse Y") * -10f);
-        //Camera.main.ScreenToWorldPoint(Input.mousePosition) r
-        Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        //Camera.main.ScreenToWorldPoint(Input.mousePosition) 
+
+        Vector3 diff = ao.transform.position - transform.position;
+        //Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         diff.Normalize();
 
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
@@ -85,5 +99,14 @@ public class PlayerController : MonoBehaviour {
         
 
 
+    }
+    public void SetDirection()
+    {
+        Vector3 diff = ao.transform.position - transform.position;
+        //Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        diff.Normalize();
+
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        dt.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
     }
 }
